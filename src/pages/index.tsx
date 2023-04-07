@@ -4,6 +4,11 @@ import { api, type RouterOutputs } from "~/utils/api";
 import Head from "next/head";
 import NavBar from "~/components/NavBar";
 import Image from "next/image";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { LoadingSpinner } from "~/components/loading";
+
+dayjs.extend(relativeTime);
 
 const CreatePostWizdar = () => {
   const { user } = useUser();
@@ -46,7 +51,7 @@ const PostView = (props: PostWithUser) => {
       <div className="flex flex-col">
         <div>
           <span className="font-semibold">{`@${author.username}`}</span>
-          <span>{` · 1 hour ago`}</span>
+          <span>{` · ${dayjs(post.createdAt).fromNow()}`}</span>
         </div>
         <p key={post.id}>{post.content}</p>
       </div>
@@ -54,8 +59,29 @@ const PostView = (props: PostWithUser) => {
   );
 };
 
+const Feed = () => {
+  const { data, isLoading } = api.posts.getAll.useQuery();
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center pt-[50%]">
+        <LoadingSpinner size={60}/>
+      </div>
+    );
+
+  if (!data) return <div>Something went wrong</div>;
+
+  return (
+    <div>
+      {data?.map(({ post, author }) => (
+        <PostView key={post.id} post={post} author={author} />
+      ))}
+    </div>
+  );
+};
 const Home: NextPage = () => {
-  const { data } = api.posts.getAll.useQuery();
+  // Start fetching posts as soon as the page loads
+  api.posts.getAll.useQuery();
 
   return (
     <>
@@ -78,11 +104,7 @@ const Home: NextPage = () => {
           <div className="border-b-2 border-black p-4">
             <CreatePostWizdar />
           </div>
-          <div>
-            {data?.map(({ post, author }) => (
-              <PostView key={post.id} post={post} author={author} />
-            ))}
-          </div>
+          <Feed />
         </main>
         <div className="w-[30%] border-l-2 border-black">
           <h2>Chat</h2>
