@@ -2,11 +2,7 @@ import { SignOutButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
-interface NavBarProps {
-  url: string;
-}
-
-const NavBar: React.FC<NavBarProps> = ({ url }) => {
+const NavBar: React.FC = () => {
   return (
     <div className="flex h-[100vh] w-[88px] justify-center">
       <div className="fixed flex h-[100%] flex-col justify-between p-3">
@@ -33,13 +29,6 @@ const NavBar: React.FC<NavBarProps> = ({ url }) => {
           </Link>
         </div>
         <div>
-          <Image
-            className="w-[100%] rounded-full"
-            src={url}
-            alt="profile-pic"
-            width={40}
-            height={40}
-          />
           <SignOutButton />
         </div>
       </div>
