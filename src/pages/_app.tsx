@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import LoginHomePage from "./loginHomePage";
+import { Toaster } from "react-hot-toast";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
@@ -32,6 +33,7 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
         <LoginHomePage/>
       </SignedOut>
       <SignedIn>
+        <Toaster />
         <Component {...pageProps} />
       </SignedIn>
     </ClerkProvider>

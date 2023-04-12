@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -20,11 +21,18 @@ const CreatePostWizdar = () => {
 
   if (!user) return null;
 
-  const { mutate } = api.posts.create.useMutation({
+  const { mutate, isLoading: isPoasting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
-    }
+    },
+    onError: (err) => {
+      const errorMessage = err.data?.zodError?.fieldErrors?.content;
+
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else toast.error("Failed to post, please try again later");
+    },
   });
 
   return (
@@ -40,17 +48,33 @@ const CreatePostWizdar = () => {
         placeholder="What's on your mind?"
         className="grow bg-transparent outline-none"
         value={input}
-        onChange={(e) => { setInput(e.target.value); }}
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            mutate({ content: input });
+            setInput("");
+          }
+        }}
       ></input>
-
-      <button
-      onClick={() => {
-        mutate({ content: input });
-        setInput("");
-      }}
-      >
-        Post
-      </button>
+      <div className="flex h-10 w-20 items-center justify-center">
+        {isPoasting ? (
+          <LoadingSpinner size={30} />
+        ) : (
+          <button
+            disabled={isPoasting || !input}
+            className="rounded-full bg-slate-800 px-4 py-1 text-white disabled:bg-slate-600"
+            onClick={() => {
+              mutate({ content: input });
+              setInput("");
+            }}
+          >
+            Post
+          </button>
+        )}
+      </div>
     </div>
   );
 };
@@ -87,8 +111,8 @@ const Feed = () => {
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center pt-[50%]">
-        <LoadingSpinner size={60}/>
+      <div className="flex items-center justify-center pt-[50%]">
+        <LoadingSpinner size={60} />
       </div>
     );
 
