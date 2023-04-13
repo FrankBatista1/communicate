@@ -1,5 +1,4 @@
 import { type AppType } from "next/app";
-
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
@@ -30,11 +29,11 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
       {...pageProps}
     >
       <SignedOut>
-        <LoginHomePage/>
+        <LoginHomePage />
       </SignedOut>
       <SignedIn>
-        <Toaster />
-        <Component {...pageProps} />
+          <Toaster />
+          <Component {...pageProps} />
       </SignedIn>
     </ClerkProvider>
   );

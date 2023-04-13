@@ -9,6 +9,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -85,24 +86,30 @@ const PostView = (props: PostWithUser) => {
   const { post, author } = props;
 
   return (
-    <div className="flex border-b-2 border-solid border-black p-4">
-      <div>
-        <Image
-          className="mx-4 rounded-full"
-          src={author.profileImageUrl}
-          alt={`Profile image of ${author.username}`}
-          width={40}
-          height={40}
-        />
-      </div>
-      <div className="flex flex-col">
+    <Link href={`/post/${post.id}`}>
+      <div className="flex border-b-2 border-solid border-black p-4">
         <div>
-          <span className="font-semibold">{`@${author.username}`}</span>
-          <span>{` · ${dayjs(post.createdAt).fromNow()}`}</span>
+          <Link href={`/@${author.username}`}>
+            <Image
+              className="mx-4 rounded-full transition duration-150 ease-in hover:opacity-50"
+              src={author.profileImageUrl}
+              alt={`Profile image of ${author.username}`}
+              width={40}
+              height={40}
+            />
+          </Link>
         </div>
-        <p key={post.id}>{post.content}</p>
+        <div className="flex flex-col">
+          <div>
+            <Link href={`/@${author.username}`}>
+              <span className="font-semibold hover:underline decoration-black">{`@${author.username}`}</span>
+            </Link>
+            <span>{` · ${dayjs(post.createdAt).fromNow()}`}</span>
+          </div>
+          <p key={post.id}>{post.content}</p>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
