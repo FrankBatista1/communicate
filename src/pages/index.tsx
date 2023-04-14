@@ -1,7 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import { api, type RouterOutputs } from "~/utils/api";
-import Head from "next/head";
 import NavBar from "~/components/NavBar";
 import Image from "next/image";
 import dayjs from "dayjs";
@@ -139,14 +138,6 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Communicate</title>
-        <meta
-          name="description"
-          content="Connect with people worldwide, regardless of language barriers - Our social media platform brings people together!"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className="flex">
         <header className="flex w-[20%] justify-end border-r-2 border-solid border-black md:w-[12rem]">
           <NavBar />

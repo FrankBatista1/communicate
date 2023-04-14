@@ -6,12 +6,7 @@ const SinglePostPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Communicate</title>
-        <meta
-          name="description"
-          content="Connect with people worldwide, regardless of language barriers - Our social media platform brings people together!"
-        />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Post</title>
       </Head>
       <div className="flex">
         <header className="flex w-[20%] justify-end border-r-2 border-solid border-black md:w-[12rem]">

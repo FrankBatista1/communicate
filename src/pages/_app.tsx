@@ -4,6 +4,7 @@ import "~/styles/globals.css";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import LoginHomePage from "./loginHomePage";
 import { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   return (
@@ -28,12 +29,20 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
       }}
       {...pageProps}
     >
+      <Head>
+        <title>Communicate</title>
+        <meta
+          name="description"
+          content="Connect with people worldwide, regardless of language barriers - Our social media platform brings people together!"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <SignedOut>
         <LoginHomePage />
       </SignedOut>
       <SignedIn>
-          <Toaster />
-          <Component {...pageProps} />
+        <Toaster />
+        <Component {...pageProps} />
       </SignedIn>
     </ClerkProvider>
   );

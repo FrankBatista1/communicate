@@ -1,16 +1,22 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import NavBar from "~/components/NavBar";
+import { api } from "~/utils/api";
 
 const ProfilePage: NextPage = () => {
+  const { data, isLoading } = api.profile.getUserByUsername.useQuery({
+    username: "frankbatista1",
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if(!data) return <div>404</div>
   return (
     <>
       <Head>
-        <title>Communicate</title>
-        <meta
-          name="description"
-          content="Connect with people worldwide, regardless of language barriers - Our social media platform brings people together!"
-        />
+        <title>Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex">
@@ -19,7 +25,7 @@ const ProfilePage: NextPage = () => {
         </header>
         <main className="grow">
           <div className="w-[100%] border-b-2 border-black">
-            <h2 className="p-3">Profile View</h2>
+            <h2 className="p-3">{data.username}</h2>
           </div>
         </main>
       </div>
