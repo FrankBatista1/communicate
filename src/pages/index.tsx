@@ -52,7 +52,7 @@ const CreatePostWizdar = () => {
           setInput(e.target.value);
         }}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" && input) {
             e.preventDefault();
             mutate({ content: input });
             setInput("");

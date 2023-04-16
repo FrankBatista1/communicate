@@ -1,7 +1,7 @@
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
+import { ClerkProvider,  SignedIn, SignedOut } from "@clerk/nextjs";
 import LoginHomePage from "./loginHomePage";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
