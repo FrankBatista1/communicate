@@ -27,7 +27,6 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
           socialButtonsPlacement: "bottom",
         },
       }}
-      {...pageProps}
     >
       <Head>
         <title>Communicate</title>
@@ -38,7 +37,7 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SignedOut>
-        <LoginHomePage />
+        <LoginHomePage/>
       </SignedOut>
       <SignedIn>
         <Toaster />

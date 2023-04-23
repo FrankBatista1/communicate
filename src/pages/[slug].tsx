@@ -1,22 +1,21 @@
-import { type NextPage } from "next";
+import {
+  type GetStaticProps,
+  type NextPage,
+} from "next";
 import Head from "next/head";
 import NavBar from "~/components/NavBar";
 import { api } from "~/utils/api";
 
-const ProfilePage: NextPage = () => {
-  const { data, isLoading } = api.profile.getUserByUsername.useQuery({
-    username: "frankbatista1",
+const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
+  const { data } = api.profile.getUserByUsername.useQuery({
+    username,
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if(!data) return <div>404</div>
+  if (!data) return <div>404</div>;
   return (
     <>
       <Head>
-        <title>Profile</title>
+        <title>{data.username}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex">
@@ -31,6 +30,41 @@ const ProfilePage: NextPage = () => {
       </div>
     </>
   );
+};
+
+import { prisma } from "~/server/db";
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { appRouter } from "~/server/api/root";
+import superjson from "superjson";
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: { prisma, currentUserId: null },
+    transformer: superjson, // optional - adds superjson serialization
+  });
+
+  const slug = context.params?.slug;
+
+  if (typeof slug !== "string") throw new Error("No slug");
+
+  const username = slug.replace("@", "");
+
+  await helpers.profile.getUserByUsername.prefetch({ username });
+
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+      username,
+    },
+  };
+};
+
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
 };
 
 export default ProfilePage;

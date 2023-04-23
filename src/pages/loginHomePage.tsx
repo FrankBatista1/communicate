@@ -8,9 +8,10 @@ const LoginHomePage: NextPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       setActiveIndex((prev) => (prev === 1 ? 0 : prev + 1));
     }, 6000);
+    return () => clearInterval(interval);
   }, []);
 
   const images = [
@@ -56,7 +57,7 @@ const LoginHomePage: NextPage = () => {
               </div>
             </div>
             <div className="m-10 flex max-w-[350px] flex-col justify-center">
-              <SignIn path="/" routing="path" signUpUrl="/accounts/signup" />
+              <SignIn path="/" routing="path" signUpUrl="/signup" />
             </div>
           </article>
         </main>
