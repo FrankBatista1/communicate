@@ -57,7 +57,7 @@ const LoginHomePage: NextPage = () => {
               </div>
             </div>
             <div className="m-10 flex max-w-[350px] flex-col justify-center">
-              <SignIn path="/" routing="path" signUpUrl="/signup" />
+              <SignIn path="/login" routing="path" signUpUrl="/signup" />
             </div>
           </article>
         </main>

@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
+import { RedirectToSignIn, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import { api, type RouterOutputs } from "~/utils/api";
 import NavBar from "~/components/NavBar";
@@ -9,7 +9,6 @@ import { LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-import LoginHomePage from "./loginHomePage";
 
 dayjs.extend(relativeTime);
 
@@ -140,7 +139,7 @@ const Home: NextPage = () => {
   return (
     <>
       <SignedOut>
-        <LoginHomePage />
+      <RedirectToSignIn />
       </SignedOut>
       <SignedIn>
         <div className="flex">
