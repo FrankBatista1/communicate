@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import { api, type RouterOutputs } from "~/utils/api";
 import NavBar from "~/components/NavBar";
@@ -9,6 +9,7 @@ import { LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import LoginHomePage from "./loginHomePage";
 
 dayjs.extend(relativeTime);
 
@@ -101,7 +102,7 @@ const PostView = (props: PostWithUser) => {
         <div className="flex flex-col">
           <div>
             <Link href={`/@${author.username}`}>
-              <span className="font-semibold hover:underline decoration-black">{`@${author.username}`}</span>
+              <span className="font-semibold decoration-black hover:underline">{`@${author.username}`}</span>
             </Link>
             <span>{` · ${dayjs(post.createdAt).fromNow()}`}</span>
           </div>
@@ -138,23 +139,28 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="flex">
-        <header className="flex w-[20%] justify-end border-r-2 border-solid border-black md:w-[12rem]">
-          <NavBar />
-        </header>
-        <main className="grow">
-          <div className="w-[100%] border-b-2 border-black">
-            <h2 className="p-3">Home</h2>
+      <SignedOut>
+        <LoginHomePage />
+      </SignedOut>
+      <SignedIn>
+        <div className="flex">
+          <header className="flex w-[20%] justify-end border-r-2 border-solid border-black md:w-[12rem]">
+            <NavBar />
+          </header>
+          <main className="grow">
+            <div className="w-[100%] border-b-2 border-black">
+              <h2 className="p-3">Home</h2>
+            </div>
+            <div className="border-b-2 border-black p-4">
+              <CreatePostWizdar />
+            </div>
+            <Feed />
+          </main>
+          <div className="w-[30%] border-l-2 border-black">
+            <h2>Chat</h2>
           </div>
-          <div className="border-b-2 border-black p-4">
-            <CreatePostWizdar />
-          </div>
-          <Feed />
-        </main>
-        <div className="w-[30%] border-l-2 border-black">
-          <h2>Chat</h2>
         </div>
-      </div>
+      </SignedIn>
     </>
   );
 };
